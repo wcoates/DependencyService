@@ -1,6 +1,6 @@
 # SFS-POC
 
-Python Flask Service to integrate with Jira Service Management intended to automate AWS system administration and whatever else. 
+Python Flask server to be integrated w/Jira Service Management intended to automate AWS system administration and whatever else. 
 
 Default: http://localhost:5000.
 
