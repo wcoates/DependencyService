@@ -1,6 +1,8 @@
 # SFS-POC
 
-Runs on http://localhost:5000.
+Python Flask Service to integrate with Jira Service Management intended to automate AWS system administration and whatever else. 
+
+Default: http://localhost:5000.
 
 ## Running in Docker:
 https://www.docker.com/blog/containerized-python-development-part-1/
