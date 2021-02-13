@@ -26,7 +26,7 @@ https://www.docker.com/blog/containerized-python-development-part-1/
   * Success - Status.RequestState is unchanged
   * Failure - Status.RequestState is updated to FAIL and error messages are appended to Status.RequestState.problems
 * SFS updates Jira Service Ticket based on Status.RequestState
-  * Update Jira Request Status - Close on SUCCESS / Failed in Automation on FAIL
+  * Update Jira Request Status - Update to "Closed" on SUCCESS/"Failed in Automation" on FAIL
   * Comment (internal only) Status.RequestState.problems on Jira Request
   
 #### Considerations
