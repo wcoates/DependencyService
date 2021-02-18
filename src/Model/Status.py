@@ -3,8 +3,8 @@ import logging
 
 class RequestState:
     def __init__(self, status, problems):
-        self.status = 'SUCCESS'  # status SUCCESS/FAIL
-        self.problems = []
+        self.status = status  # status SUCCESS/FAIL
+        self.problems = problems
 
     def set_fail_status(self):
         self.status = "FAIL"
