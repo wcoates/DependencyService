@@ -11,7 +11,7 @@ https://www.docker.com/blog/containerized-python-development-part-1/
 * docker ps
 * curl http://localhost:5000
 
-## Recommended: Running in IDE:
+## SFS Behavior:
 
 #### Endpoints:
 * '/' GET
@@ -32,11 +32,8 @@ https://www.docker.com/blog/containerized-python-development-part-1/
   * Comment (internal only) Status.RequestState.problems on Jira Request
   
 #### Considerations
-* Scripts must have a corresponding Model.RequestModel
-* Jira Schema and Python datamodels must be exactly the same
 * Scripts must catch all exceptions
 * Will need to build out clients, think about key mgmt
 * Partial completion will require manual intervention
-* Re-run flow - JSM moving status from Failed in Automation to To Do refires POST
   
   

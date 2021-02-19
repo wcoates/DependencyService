@@ -1,8 +1,8 @@
 class ClientWrapper:
     def __init__(self, client_config):
-        self.ClientConfig = client_config
-        self.MockS3Client = MockS3Client(client_config.user, client_config.key)
-        self.MockJiraClient = MockJiraClient(client_config.user, client_config.key)
+        self.client_config = client_config
+        self.mock_s3_client = MockS3Client(client_config.user, client_config.key)
+        self.mock_jira_client = MockJiraClient(client_config.user, client_config.key)
 
 
 class MockS3Client:
