@@ -33,14 +33,7 @@ def s3access_request_failure():
 def parse_jira_data(jira_issue_json):
     #TODO parse response body / delete mock
 
-    return mock_jira_data()
-
-
-def mock_jira_data():
-    y = json.loads(' {"jira_issue_key": "ITOOLS-1", "db_name": "STAGE", "user_id": "WC045050"} ')
-    jira_data = JiraData(y['jira_issue_key'], y['db_name'], y['user_id'])
-
-    return jira_data
+    return JiraData("ITOOLS-1", "STAGE", "WC045050")
 
 
 if __name__ == "__main__":  # for Docker

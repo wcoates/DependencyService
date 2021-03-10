@@ -1,0 +1,16 @@
+{
+    "credential_store":{
+        "user":"root",
+        "key":"my secret password"
+    },
+    "client_config":{
+            "jira":{
+              "base_url" : "https://jira_base_url",
+              "key_id" : "jira_keyId"
+            },
+            "s3" : {
+              "base_url" : "https://s3_base_url",
+              "key_id" : "s3_keyId"
+            }
+    }
+}

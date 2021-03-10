@@ -1,7 +1,7 @@
 import enum
 
-from src.Client.Clients import ClientWrapper
-from src.Client.Config.ClientConfig import ConfigClient
+from src.Client.ClientWrapper import ClientWrapper
+from src.Client.Config.ClientConfig import ConfigClient, ClientName
 from src.Model.Status import RequestState
 
 
@@ -10,12 +10,12 @@ class ScriptRunner:
         self.JiraData = jira_data
         self.ClientWrapper = self.build_client_wrapper()
         self.RequestState = RequestState("SUCCESS", [])
-        self.JiraUpdate = JiraUpdate(self.JiraData, self.ClientWrapper, self.RequestState)
+        self.JiraUpdate = JiraUpdater(self.JiraData, self.ClientWrapper, self.RequestState)
 
     @staticmethod
     def build_client_wrapper():
         config_client = ConfigClient()
-        return ClientWrapper(config_client.retrieve_config())
+        return ClientWrapper(config_client)
 
     def run(self, script_name):
         if script_name == ScriptDefinitions.S3AccessSuccessExample.value:
@@ -36,38 +36,37 @@ class ScriptDefinitions(enum.Enum):
 class S3AccessSuccessful:
     def __init__(self, jira_data, client_wrapper, request_state):
         self.JiraData = jira_data
-        self.ClientWrapper = client_wrapper
+        self.S3Client = client_wrapper.client_list[ClientName.s3.value]
         self.RequestState = request_state
 
     def run(self):
-        print()
-        self.ClientWrapper.mock_s3_client.add_user(self.JiraData.user_id)
+        self.S3Client.add_user(self, self.JiraData.user_id)
 
 
 class S3AccessFailure:
     def __init__(self, jira_data, client_wrapper, request_state):
         self.JiraData = jira_data
-        self.ClientWrapper = client_wrapper
+        self.S3Client = client_wrapper.client_list[ClientName.s3.value]
         self.RequestState = request_state
 
     def run(self):
-        self.ClientWrapper.mock_s3_client.add_user(self.JiraData.user_id)
+        self.S3Client.add_user(self, self.JiraData.user_id)
 
+        print(self.S3Client.base_url)
         # Pretend something went wrong
         self.RequestState.set_fail_status()
         self.RequestState.add_problem("Something went wrong")
 
 
-class JiraUpdate:
+class JiraUpdater:
     def __init__(self, jira_data, client_wrapper, request_state):
         self.JiraData = jira_data
-        self.ClientWrapper = client_wrapper
+        self.JiraClient = client_wrapper.client_list[ClientName.jira.value]
         self.RequestState = request_state
 
     def update_status(self):
-        self.ClientWrapper.mock_jira_client.update_status(self.JiraData.issue_key, self.RequestState.status)
+        self.JiraClient.update_status(self, self.JiraData.issue_key, self.RequestState.status)
 
     def post_problems(self):
         if self.RequestState.problems:
-            self.ClientWrapper.mock_jira_client.comment_problems(self.JiraData.issue_key, self.RequestState.problems)
-
+            self.JiraClient.comment_problems(self, self.JiraData.issue_key, self.RequestState.problems)
