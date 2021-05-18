@@ -1,40 +1,38 @@
-from flask import Flask, request
-import json
+from flask import Flask
 
-from Model.JiraData import JiraData
-from Script.Scripts import ScriptDefinitions, ScriptRunner
+from src.Model.Application import ApplicationFactory
 
 app = Flask(__name__)
 
 
-@app.route('/', methods=['GET'])
-def index():
-    return "Hello World"
+@app.route("/dependencies/<application_name>/<commit_hash>", methods=['GET'])
+def commit_dependencies(application_name, commit_hash):
+    # commit hash should be comma separated
+    application = app_factory.get_application(application_name)
+
+    return application.name + " " + commit_hash
 
 
-@app.route("/" + ScriptDefinitions.S3AccessSuccessExample.value, methods=['POST'])
-def s3access_request_success():
-    jira_data = parse_jira_data(request.get_json())
-    script = ScriptRunner(jira_data)
-    script.run(request.path[1:])
+@app.route("/dependencies/<application>/composer.json", methods=['GET'])
+def commit_dependencies_file(application_name):
 
-    return ""
+    return application_name
 
 
-@app.route("/" + ScriptDefinitions.S3AccessFailureExample.value, methods=['POST'])
-def s3access_request_failure():
-    jira_data = parse_jira_data(request.get_json())
-    script = ScriptRunner(jira_data)
-    script.run(request.path[1:])
+@app.route("/dependencies/<application_name>/compare", methods=['GET'])
+def compare_application_commits(application_name):
+    # if all
 
-    return ""
+    return application_name
 
 
-def parse_jira_data(jira_issue_json):
-    #TODO parse response body / delete mock
+@app.route("/dependencies/<application>/compare/latest", methods=['GET'])
+def compare_application_latest(application_name):
 
-    return JiraData("ITOOLS-1", "STAGE", "WC045050")
+    return application_name
 
 
 if __name__ == "__main__":  # for Docker
+    app_factory = ApplicationFactory()
+    app_factory.initialize_applications()
     app.run(host='0.0.0.0')
